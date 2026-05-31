@@ -84,7 +84,6 @@ export default function EditScheduleModal({ isOpen, data, onClose, onSave }) {
             )}
           </div>
 
-          {/* Tùy chọn áp dụng tương lai */}
           <div onClick={() => setApplyFuture(!applyFuture)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', marginTop: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ width: 16, height: 16, borderRadius: '50%', border: applyFuture ? '5px solid var(--color-primary)' : '1px solid var(--color-border)', background: '#fff', transition: 'all 0.15s' }} />

@@ -5,7 +5,6 @@ export default function TimetableCell({ data, isToday, isHighlighted, matched, d
   const [isHovered, setIsHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
 
-  // TRƯỜNG HỢP Ô TRỐNG: Thêm hiệu ứng hover dấu cộng
   if (!data) {
     return (
       <div 
@@ -37,7 +36,6 @@ export default function TimetableCell({ data, isToday, isHighlighted, matched, d
     )
   }
 
-  // TRƯỜNG HỢP CÓ DỮ LIỆU
   const color = SUBJECT_COLORS[data.subject] || { bg: '#f8fafc', border: '#94a3b8' }
 
   return (
@@ -72,7 +70,6 @@ export default function TimetableCell({ data, isToday, isHighlighted, matched, d
         {data.teacher}
       </div>
 
-      {/* Hiển thị nút Sửa/Xóa khi hover */}
       {isHovered && !isDragging && (
         <div style={{ position: 'absolute', top: 4, right: 4, display: 'flex', gap: 4 }}>
           <button

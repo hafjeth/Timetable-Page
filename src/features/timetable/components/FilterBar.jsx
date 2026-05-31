@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { KHOI_LIST, LOP_BY_KHOI, VIEW_MODE } from '../constants/timetableConstants'
-import { MOCK_SCHEDULE } from '../data/mockSchedule'
 import { SUBJECT_COLORS } from '../../../utils/colors'
 
-export default function FilterBar({ khoi, lop, viewMode, onKhoiChange, onLopChange, onViewModeChange, onFilterSelect, searchFilter }) {
+export default function FilterBar({ khoi, lop, viewMode, onKhoiChange, onLopChange, onViewModeChange, onFilterSelect, searchFilter, allSchedule = {} }) {
   const lopList = LOP_BY_KHOI[khoi] || []
   const [search, setSearch] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
@@ -12,7 +11,7 @@ export default function FilterBar({ khoi, lop, viewMode, onKhoiChange, onLopChan
   const index = useMemo(() => {
     const teachers = {}
     const subjects = {}
-    Object.values(MOCK_SCHEDULE).forEach(lopSchedule => {
+    Object.values(allSchedule).forEach(lopSchedule => {
       Object.values(lopSchedule).forEach(daySchedule => {
         Object.values(daySchedule).forEach(({ subject, teacher }) => {
           if (teacher) {
@@ -32,7 +31,7 @@ export default function FilterBar({ khoi, lop, viewMode, onKhoiChange, onLopChan
       teachers: Object.values(teachers).map(t => ({ name: t.name, subjects: [...t.subjectSet].join(', '), count: t.count })),
       subjects: Object.values(subjects).map(s => ({ name: s.name, count: s.count, numTeachers: s.teacherSet.size })),
     }
-  }, [])
+  }, [allSchedule])
 
   const keyword = search.trim().toLowerCase()
   const filteredTeachers = useMemo(() => keyword ? index.teachers.filter(t => t.name.toLowerCase().includes(keyword) || t.subjects.toLowerCase().includes(keyword)) : [], [keyword, index])
@@ -83,7 +82,6 @@ export default function FilterBar({ khoi, lop, viewMode, onKhoiChange, onLopChan
       background: 'var(--color-white)', borderBottom: '1px solid var(--color-border)',
       padding: '16px 24px', display: 'flex', alignItems: 'flex-end', gap: 24,
     }}>
-      {/* ẨN KHỐI / LỚP NẾU Ở TAB GIÁO VIÊN */}
       {viewMode === VIEW_MODE.THEO_LOP && (
         <>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -101,7 +99,6 @@ export default function FilterBar({ khoi, lop, viewMode, onKhoiChange, onLopChan
         </>
       )}
 
-      {/* Tìm kiếm */}
       <div ref={searchRef} style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
         <label style={labelStyle}>Tìm kiếm</label>
         <div style={{ position: 'relative' }}>
@@ -123,21 +120,27 @@ export default function FilterBar({ khoi, lop, viewMode, onKhoiChange, onLopChan
           </svg>
         </div>
 
-        {/* Dropdown Tìm Kiếm */}
         {showDropdown && keyword && (
           <div style={{
             position: 'absolute', top: 'calc(100% + 6px)', left: 0, width: 340, background: '#fff',
             border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)',
             boxShadow: 'var(--shadow-md)', zIndex: 200, overflow: 'hidden',
           }}>
-            {!hasResults && (<div style={{ padding: '16px', fontSize: 13, color: 'var(--color-text-secondary)', textAlign: 'center' }}>Không tìm thấy kết quả</div>)}
+            {!hasResults && <div style={{ padding: '16px', fontSize: 13, color: 'var(--color-text-secondary)', textAlign: 'center' }}>Không tìm thấy kết quả</div>}
 
             {filteredTeachers.length > 0 && (
               <>
-                <div style={{ padding: '10px 14px 4px', fontSize: 11, fontWeight: 700, color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', background: '#f9fafb' }}>Giáo viên ({filteredTeachers.length})</div>
+                <div style={{ padding: '10px 14px 4px', fontSize: 11, fontWeight: 700, color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', background: '#f9fafb' }}>
+                  Giáo viên ({filteredTeachers.length})
+                </div>
                 {filteredTeachers.map(t => (
-                  <div key={t.name} style={{ display: 'flex', alignItems: 'center', padding: '10px 14px', cursor: 'pointer', gap: 12 }} onMouseEnter={e => e.currentTarget.style.background = '#f3f4f6'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'} onClick={() => handleSelectTeacher(t)}>
-                    <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'var(--color-primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: 'var(--color-primary)', flexShrink: 0 }}>{t.name.split(' ').pop()?.[0] || '?'}</div>
+                  <div key={t.name} style={{ display: 'flex', alignItems: 'center', padding: '10px 14px', cursor: 'pointer', gap: 12 }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#f3f4f6'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    onClick={() => handleSelectTeacher(t)}>
+                    <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'var(--color-primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: 'var(--color-primary)', flexShrink: 0 }}>
+                      {t.name.split(' ').pop()?.[0] || '?'}
+                    </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text)' }}>{t.name}</div>
                       <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.subjects}</div>
@@ -149,12 +152,19 @@ export default function FilterBar({ khoi, lop, viewMode, onKhoiChange, onLopChan
 
             {filteredSubjects.length > 0 && (
               <>
-                <div style={{ padding: '10px 14px 4px', fontSize: 11, fontWeight: 700, color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', background: '#f9fafb', borderTop: filteredTeachers.length > 0 ? '1px solid var(--color-border)' : 'none' }}>Môn học ({filteredSubjects.length})</div>
+                <div style={{ padding: '10px 14px 4px', fontSize: 11, fontWeight: 700, color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', background: '#f9fafb', borderTop: filteredTeachers.length > 0 ? '1px solid var(--color-border)' : 'none' }}>
+                  Môn học ({filteredSubjects.length})
+                </div>
                 {filteredSubjects.map(s => {
                   const color = SUBJECT_COLORS[s.name] || { bg: '#f8fafc', border: '#94a3b8', dot: '#94a3b8' }
                   return (
-                    <div key={s.name} style={{ display: 'flex', alignItems: 'center', padding: '10px 14px', cursor: 'pointer', gap: 12 }} onMouseEnter={e => e.currentTarget.style.background = '#f3f4f6'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'} onClick={() => handleSelectSubject(s)}>
-                      <div style={{ width: 34, height: 34, borderRadius: 'var(--radius-sm)', background: color.bg, border: `1px solid ${color.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><div style={{ width: 12, height: 12, borderRadius: '50%', background: color.dot }} /></div>
+                    <div key={s.name} style={{ display: 'flex', alignItems: 'center', padding: '10px 14px', cursor: 'pointer', gap: 12 }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#f3f4f6'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                      onClick={() => handleSelectSubject(s)}>
+                      <div style={{ width: 34, height: 34, borderRadius: 'var(--radius-sm)', background: color.bg, border: `1px solid ${color.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <div style={{ width: 12, height: 12, borderRadius: '50%', background: color.dot }} />
+                      </div>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text)' }}>{s.name}</div>
                         <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginTop: 2 }}>{s.numTeachers} GV phụ trách</div>

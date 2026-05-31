@@ -1,48 +1,33 @@
-import { MOCK_SCHEDULE } from '../data/mockSchedule'
-
-// Lấy danh sách tất cả giáo viên từ toàn bộ schedule
-export function getAllTeachers() {
-  const teachers = {}
-  Object.values(MOCK_SCHEDULE).forEach(lopSchedule => {
-    Object.values(lopSchedule).forEach(daySchedule => {
-      Object.values(daySchedule).forEach(({ subject, teacher }) => {
-        if (!teachers[teacher]) teachers[teacher] = { name: teacher, subjectSet: new Set() }
-        teachers[teacher].subjectSet.add(subject)
-      })
-    })
-  })
-  return Object.values(teachers).map(t => ({
-    name: t.name,
-    subjects: [...t.subjectSet],
-    label: `${t.name} (${[...t.subjectSet].join(', ')})`,
-  })).sort((a, b) => a.name.localeCompare(b.name, 'vi'))
+export function normalizeStr(str) {
+  if (!str) return '';
+  return String(str).normalize('NFC').replace(/\s+/g, '').toLowerCase();
 }
 
-// Build schedule theo giáo viên: { dayKey: { period: { subject, lop } } }
-export function getScheduleByTeacher(teacherName) {
-  const result = {}
-  Object.entries(MOCK_SCHEDULE).forEach(([lop, lopSchedule]) => {
-    Object.entries(lopSchedule).forEach(([day, daySchedule]) => {
-      Object.entries(daySchedule).forEach(([period, cell]) => {
-        if (cell.teacher === teacherName) {
-          if (!result[day]) result[day] = {}
-          result[day][Number(period)] = { subject: cell.subject, lop }
-        }
-      })
-    })
-  })
-  return result
+export function beautifyName(str) {
+  if (!str) return '';
+  return String(str).trim(); 
 }
 
-// Lấy danh sách môn GV đó dạy
-export function getSubjectsByTeacher(teacherName) {
-  const subjects = new Set()
-  Object.values(MOCK_SCHEDULE).forEach(lopSchedule => {
-    Object.values(lopSchedule).forEach(daySchedule => {
-      Object.values(daySchedule).forEach(cell => {
-        if (cell.teacher === teacherName) subjects.add(cell.subject)
-      })
-    })
-  })
-  return [...subjects]
+export function parseSafeDate(val) {
+  if (!val) return new Date();
+  let d;
+  if (val instanceof Date) d = new Date(val);
+  else {
+    const str = String(val).trim();
+    if (str.includes('/')) {
+      const parts = str.split('/');
+      if (parts.length === 3) d = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+    } else if (str.includes('-')) {
+      const parts = str.split('T')[0].split('-');
+      if (parts.length === 3) d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    } else d = new Date(str);
+  }
+  if (!d || isNaN(d.getTime())) return new Date();
+  d.setHours(0, 0, 0, 0); 
+  return d;
+}
+
+export function dateToInputValue(d) {
+  if (!(d instanceof Date) || isNaN(d.getTime())) return '';
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }

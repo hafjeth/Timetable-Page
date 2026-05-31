@@ -1,17 +1,5 @@
-/**
- * excelService.js
- * Parse file .xlsx thời khóa biểu
- * Cấu trúc cột: A: Ngày (dd/MM/yyyy) | B: Tiết số | C: Tên lớp | D: Môn học | E: Giáo viên (tùy chọn)
- *
- * Cần cài: npm install xlsx
- */
 import * as XLSX from 'xlsx'
 
-/**
- * Đọc file .xlsx và trả về danh sách các tiết học thô
- * @param {File} file
- * @returns {Promise<Array>} rows - mảng object { date, period, className, subject, teacher }
- */
 export async function parseExcelFile(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -29,17 +17,14 @@ export async function parseExcelFile(file) {
 
         for (let i = 0; i < rows.length; i++) {
           const row = rows[i]
-          // Bỏ qua hàng trống hoặc header
           if (!row[0] || !row[1] || !row[2] || !row[3]) continue
 
-          // Cột A: Ngày — hỗ trợ cả Date object (xlsx cellDates) và string dd/MM/yyyy
           let dateObj = null
           if (row[0] instanceof Date) {
             dateObj = row[0]
           } else if (typeof row[0] === 'string') {
             const parts = row[0].split('/')
             if (parts.length === 3) {
-              // dd/MM/yyyy
               dateObj = new Date(
                 parseInt(parts[2]),
                 parseInt(parts[1]) - 1,
@@ -73,10 +58,6 @@ export async function parseExcelFile(file) {
   })
 }
 
-/**
- * Chuyển ngày sang dayKey dùng trong schedule state
- * dayOfWeek: 0=CN, 1=T2, 2=T3, 3=T4, 4=T5, 5=T6, 6=T7
- */
 const DAY_KEY_MAP = {
   1: 'Thu Hai',
   2: 'Thu Ba',
@@ -90,9 +71,6 @@ export function dateToDayKey(date) {
   return DAY_KEY_MAP[date.getDay()] || null
 }
 
-/**
- * Format date thành chuỗi dd/MM/yyyy để hiển thị
- */
 export function formatDateVN(date) {
   const d = date.getDate().toString().padStart(2, '0')
   const m = (date.getMonth() + 1).toString().padStart(2, '0')
@@ -100,10 +78,6 @@ export function formatDateVN(date) {
   return `${d}/${m}/${y}`
 }
 
-/**
- * Validate một row parsed
- * @returns {{ valid: boolean, error?: string }}
- */
 export function validateRow(row) {
   const dayKey = dateToDayKey(row.date)
   if (!dayKey) return { valid: false, error: 'Ngày không hợp lệ (chỉ Thứ 2 → Thứ 7)' }
@@ -112,10 +86,6 @@ export function validateRow(row) {
   return { valid: true }
 }
 
-/**
- * Chuyển danh sách rows đã parse thành schedule object
- * schedule[lop][dayKey][period] = { subject, teacher }
- */
 export function rowsToSchedule(rows) {
   const schedule = {}
 
@@ -138,9 +108,6 @@ export function rowsToSchedule(rows) {
   return schedule
 }
 
-/**
- * Tạo file Excel mẫu để tải về
- */
 export function downloadSampleExcel() {
   const sampleData = [
     ['Ngày (dd/MM/yyyy)', 'Tiết số', 'Tên lớp', 'Môn học', 'Giáo viên (tùy chọn)'],

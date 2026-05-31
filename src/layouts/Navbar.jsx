@@ -22,7 +22,7 @@ function DropdownPill({ options, value, onChange }) {
         style={{
           display: 'flex', alignItems: 'center', gap: 6,
           padding: '4px 12px', borderRadius: 999,
-          background: 'rgba(255,255,255,0.15)', // Nền trắng mờ
+          background: 'rgba(255,255,255,0.15)', 
           border: '1px solid rgba(255,255,255,0.1)',
           color: '#fff', fontSize: 'var(--font-size-sm)',
           cursor: 'pointer', whiteSpace: 'nowrap', transition: 'background 0.2s'

@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import { parseExcelFile, validateRow, formatDateVN, dateToDayKey, downloadSampleExcel } from '../../../services/excelService'
 
-// ─── Step indicator ───────────────────────────────────────────────────────────
 function StepIndicator({ step }) {
   const steps = ['Tải lên file', 'Kiểm tra dữ liệu', 'Hoàn thành']
   return (
@@ -216,7 +215,6 @@ function PreviewStep({ file, rows, onChangeFile, applyFuture, setApplyFuture }) 
         </div>
       </div>
       
-      {/* CHECKBOX CHÈN VÀO ĐÂY */}
       <div onClick={() => setApplyFuture(!applyFuture)} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, cursor: 'pointer', padding: '10px', background: '#f8fafc', border: '1px solid var(--color-border)', borderRadius: 8 }}>
         <div style={{ width: 18, height: 18, borderRadius: '50%', border: applyFuture ? '5px solid var(--color-primary)' : '1px solid #cbd5e1', background: '#fff' }} />
         <div style={{ display: 'flex', flexDirection: 'column' }}>

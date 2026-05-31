@@ -1,8 +1,6 @@
-import { useState, useRef, useEffect, useMemo } from 'react'
-import { getAllTeachers } from '../utils/timetableHelpers'
+import { useState, useRef, useEffect } from 'react'
 
-export default function TeacherSelector({ selectedTeacher, onSelect }) {
-  const teachers = useMemo(() => getAllTeachers(), [])
+export default function TeacherSelector({ selectedTeacher, onSelect, teachers = [] }) {
   const [isOpen, setIsOpen] = useState(false)
   const ref = useRef()
 
@@ -21,9 +19,8 @@ export default function TeacherSelector({ selectedTeacher, onSelect }) {
       borderRadius: 'var(--radius-md)',
       padding: '16px 20px',
       display: 'flex', alignItems: 'center', gap: 20,
-      margin: '16px 24px 16px 24px' // Tạo khoảng cách cách ly chuẩn
+      margin: '16px 20px' 
     }}>
-      {/* User Icon */}
       <div style={{ color: '#3b82f6' }}>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -31,7 +28,6 @@ export default function TeacherSelector({ selectedTeacher, onSelect }) {
         </svg>
       </div>
 
-      {/* Dropdown */}
       <div ref={ref} style={{ position: 'relative', width: 320 }}>
         <label style={{ display: 'block', fontSize: 11, color: '#6b7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 4 }}>
           Giáo viên
@@ -72,14 +68,13 @@ export default function TeacherSelector({ selectedTeacher, onSelect }) {
         )}
       </div>
 
-      {/* Info text */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#2563eb', fontSize: 13, fontWeight: 500 }}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="12" y1="16" x2="12" y2="12"></line>
           <line x1="12" y1="8" x2="12.01" y2="8"></line>
         </svg>
-        {selectedObj ? `Môn: ${selectedObj.subjects} — Xem tất cả tiết dạy trong tuần` : 'Chọn giáo viên để xem lịch dạy trong tuần trên tất cả các lớp'}
+        {selectedObj ? (selectedObj.subjects ? `Môn: ${selectedObj.subjects} — Xem tất cả tiết dạy trong tuần` : `Giáo viên ${selectedObj.name} hiện chưa có tiết dạy`) : 'Chọn giáo viên để xem lịch dạy trong tuần'}
       </div>
     </div>
   )

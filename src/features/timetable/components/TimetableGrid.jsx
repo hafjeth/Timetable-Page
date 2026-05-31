@@ -5,7 +5,6 @@ import TimetableCell from './TimetableCell'
 
 const today = new Date()
 
-// Đã cập nhật props thành searchFilters (số nhiều)
 export default function TimetableGrid({ monday, schedule, searchFilters, onCellClick, onEditClick, onDeleteClick, onMoveClick }) {
   const weekDays = getWeekDays(monday)
   const [activeCol, setActiveCol] = useState(null)
@@ -14,10 +13,8 @@ export default function TimetableGrid({ monday, schedule, searchFilters, onCellC
 
   const hasFilter = searchFilters && searchFilters.length > 0
 
-  // KIỂM TRA LỌC THEO MẢNG
   function isMatch(cellData) {
     if (!cellData || !hasFilter) return false
-    // Chỉ cần khớp 1 trong số các bộ lọc là sẽ highlight lên
     return searchFilters.some(filter => {
       if (filter.type === 'teacher') return cellData.teacher === filter.value
       if (filter.type === 'subject') return cellData.subject === filter.value

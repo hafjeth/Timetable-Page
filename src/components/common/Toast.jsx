@@ -7,8 +7,8 @@ export default function Toast({ message, type = 'success', onClose, duration = 3
   }, [duration, onClose])
 
   const styles = {
-    success: { bg: '#047857', color: '#ffffff', icon: 'M5 13l4 4L19 7' }, // Dark green
-    error:   { bg: '#dc2626', color: '#ffffff', icon: 'M6 18L18 6M6 6l12 12' }, // Red
+    success: { bg: '#047857', color: '#ffffff', icon: 'M5 13l4 4L19 7' },
+    error:   { bg: '#dc2626', color: '#ffffff', icon: 'M6 18L18 6M6 6l12 12' }, 
   }
   const s = styles[type] || styles.success
 

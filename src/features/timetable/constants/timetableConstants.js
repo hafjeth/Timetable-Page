@@ -32,5 +32,4 @@ export const VIEW_MODE = {
   THEO_GIAO_VIEN: 'theo-giao-vien',
 }
 
-// Thứ Hai → Thứ Bảy (6 ngày)
 export const DAY_KEYS = ['Thu Hai', 'Thu Ba', 'Thu Tu', 'Thu Nam', 'Thu Sau', 'Thu Bay']

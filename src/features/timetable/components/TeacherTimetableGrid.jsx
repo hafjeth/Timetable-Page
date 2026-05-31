@@ -6,7 +6,6 @@ import { SUBJECT_COLORS } from '../../../utils/colors'
 const today = new Date()
 
 export default function TeacherTimetableGrid({ monday, schedule }) {
-  // Bỏ .slice(0, 5) để hiển thị đầy đủ 6 ngày (Thứ 2 -> Thứ 7)
   const weekDays = getWeekDays(monday)
   const [activeCol, setActiveCol] = useState(null)
   const [activeRow, setActiveRow] = useState(null)
@@ -31,7 +30,7 @@ export default function TeacherTimetableGrid({ monday, schedule }) {
             {weekDays.map((day, i) => {
               const isToday = isSameDay(day, today)
               const isHL = activeCol === i
-              const isLast = i === weekDays.length - 1 // Fix border phải cho cột Thứ 7
+              const isLast = i === weekDays.length - 1 
               return (
                 <th key={i} onClick={() => setActiveCol(p => p === i ? null : i)}
                   style={{

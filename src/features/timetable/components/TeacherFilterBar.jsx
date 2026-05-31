@@ -26,7 +26,6 @@ export default function TeacherFilterBar({ viewMode, onViewModeChange, selectedT
       alignItems: 'flex-end',
       gap: 'var(--spacing-md)',
     }}>
-      {/* Tìm kiếm — placeholder only */}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <label style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-secondary)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 2 }}>
           Tìm kiếm
@@ -52,7 +51,6 @@ export default function TeacherFilterBar({ viewMode, onViewModeChange, selectedT
         </div>
       </div>
 
-      {/* View mode */}
       <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
         {[{ mode: VIEW_MODE.THEO_LOP, label: 'Theo lớp' }, { mode: VIEW_MODE.THEO_GIAO_VIEN, label: 'Theo giáo viên' }].map(({ mode, label }) => (
           <button key={mode} onClick={() => onViewModeChange(mode)} style={{
