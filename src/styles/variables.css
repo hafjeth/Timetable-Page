@@ -1,0 +1,51 @@
+:root {
+  /* Brand colors - Đổi sang tone Blue chuẩn của thiết kế */
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-primary-light: #eff6ff;
+
+  /* Neutral */
+  --color-white: #ffffff;
+  --color-bg: #f8fafc;
+  --color-border: #e5e7eb;
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+
+  /* Subject colors (Giữ nguyên) */
+  --color-toan: #f97316;
+  --color-tieng-viet: #3b82f6;
+  --color-dao-duc: #a855f7;
+  --color-tu-nhien-xh: #10b981;
+  --color-am-nhac: #ec4899;
+  --color-the-duc: #ef4444;
+  --color-my-thuat: #f59e0b;
+  --color-tieng-anh: #06b6d4;
+  --color-tin-hoc: #64748b;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Font */
+  --font-family: 'Inter', system-ui, sans-serif;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  /* Layout */
+  --navbar-height: 54px; /* Tăng nhẹ chiều cao cho thoáng */
+  --topbar-height: 48px;
+}
