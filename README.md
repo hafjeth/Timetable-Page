@@ -7,6 +7,7 @@ A web-based school timetable management application built with React and Vite. D
 ## Table of Contents
 
 - [Overview](#overview)
+- [Demo Guide](#demo-guide)
 - [Project Structure](#project-structure)
 - [Architecture](#architecture)
 - [Features](#features)
