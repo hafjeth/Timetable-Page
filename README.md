@@ -124,7 +124,7 @@ This design means switching weeks requires only rerunning the merge function wit
 
 ### Teacher Conflict Detection
 
-Before any write operation is committed, the system checks whether the assigned teacher is already scheduled in a different class at the same day and period, using `fullSchoolScheduleForWeek`. Conflicts are reported as non-blocking warnings via the toast system, and the operation is aborted.
+Before any write operation is committed, the system checks whether the assigned teacher is already scheduled in a different class at the same day and period, using `fullSchoolScheduleForWeek`. If a conflict is detected, the operation is strictly blocked, and the issue is reported to the user via non-intrusive toast notifications.
 
 ### View Modes
 
@@ -146,7 +146,7 @@ The application supports two view modes toggled from the filter bar:
 ### Import and Export
 
 - **Excel import** — parses `.xlsx` files using SheetJS. Validates each row for required fields, detects teacher conflicts against the current schedule, and detects intra-file double-booking before applying any changes.
-- **PNG export** — captures the timetable grid as a high-resolution PNG using `html2canvas`. The export modal provides a preview, filename input, and quality selector (1x / 2x / 3x). Uses the File System Access API where available, with an automatic download fallback.
+- **PNG export** — captures the timetable grid as a high-resolution, print-ready PNG (Retina 2x scale) using html2canvas. It utilizes the modern File System Access API to prompt a "Save As" dialog with an intelligently pre-filled filename, providing an automatic download fallback for older browsers.
 
 ### Filtering
 
@@ -236,4 +236,4 @@ The expected column layout is: A — date (dd/MM/yyyy), B — period number, C �
 
 ### Exporting as PNG
 
-Click "Xuất PNG" to open the export modal. A preview of the current timetable is generated automatically. Select the desired output resolution and file name, then save.
+Navigate to the desired view (Class or Teacher), ensure the screen looks correct, and click "Xuất PNG". A confirmation modal will appear. Upon proceeding, the system will temporarily adjust the viewport to capture the full grid and prompt you to save the high-resolution image file.
