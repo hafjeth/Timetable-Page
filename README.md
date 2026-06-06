@@ -24,6 +24,34 @@ The core design principle is **non-destructive editing**: rather than mutating t
 
 ---
 
+## Demo Guide
+
+The live demo is intentionally initialized with a lightweight timetable dataset in order to demonstrate the Excel import workflow and allow users to test the system using external data.
+
+Before testing the application, please download the sample timetable file:
+
+📄 Sample Excel File:
+
+https://timetable-page-flax.vercel.app/TKB_Import_Mau_Titkul.xlsx
+
+### Testing Steps
+
+1. Download the sample Excel file from the link above.
+2. Open the live demo application.
+3. Click **Import Excel**.
+4. Select the downloaded Excel file.
+5. Review the imported data and confirm the import operation.
+6. Explore the available system features, including:
+   - Class timetable view
+   - Teacher timetable view
+   - Add, edit, and delete lessons
+   - Move and swap lessons
+   - Teacher conflict detection
+   - Excel import validation
+   - PNG export
+
+---
+
 ## Project Structure
 
 ```
